@@ -1,8 +1,4 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+
 package clientgui;
 
 import java.util.LinkedList;
@@ -33,6 +29,7 @@ import javafx.stage.Stage;
 public class ClientGUI extends Application {
     //text display
     private TextArea output;
+    
     //client controls
     private LinkedList<Button> buttons; 
     Button tdButton;        //time/date
@@ -47,7 +44,7 @@ public class ClientGUI extends Application {
     
     @Override
     public void start(Stage primaryStage) {
-       
+        //create list of buttons
         buttons = new LinkedList();
         buttons.add(tdButton = new Button("time/date"));
         buttons.add(uptimeButton = new Button("uptime"));
@@ -57,15 +54,21 @@ public class ClientGUI extends Application {
         buttons.add(processesButton = new Button("running proc"));
         
         
-        
+        //root pane holds all tool panes
         BorderPane root = new BorderPane();
         
+        //put client controls on right
         root.setRight(addHostControls(buttons));
+        
+        //put thread controls on left
         root.setLeft(addThreadControls());
+        
+        //put scrolling text area in center
         root.setCenter(addScroll());
         Scene scene = new Scene(root, 500, 350);
         
         //configure buttons here (currently only two)
+        //time/date
         tdButton.setOnAction(new EventHandler<ActionEvent>() {
 
             @Override
@@ -75,6 +78,7 @@ public class ClientGUI extends Application {
             }
         });
         
+        //uptime button
         uptimeButton.setOnAction(new EventHandler<ActionEvent>() {
 
             @Override
@@ -83,7 +87,13 @@ public class ClientGUI extends Application {
               output.appendText( "should print server uptime \n" );
             }
         });
-       
+        //more button code comes after this
+        
+        //choice box code can go here
+        /* 
+        The choice box will signal the application to
+        set the number of client threads to the chosen amount.
+        */
         
         //show window       
         primaryStage.setTitle("Client");
@@ -91,7 +101,11 @@ public class ClientGUI extends Application {
         primaryStage.show();
     }
 
-    
+    /**
+     * 
+     * @param controls A linked list of control buttons
+     * @return a VBox populated with control buttons
+     */
     public VBox addHostControls(LinkedList<Button> controls) {
     //create return pane
     VBox vbox = new VBox();
@@ -110,7 +124,12 @@ public class ClientGUI extends Application {
     }
     
     return vbox;
-}
+    }
+    
+    /**
+     * 
+     * @return a VBox with the nThreads choicebox 
+     */
     public VBox addThreadControls() {
     VBox vbox = new VBox();
     vbox.setPadding(new Insets(10));
@@ -128,6 +147,10 @@ public class ClientGUI extends Application {
 
     }
     
+    /**
+    *
+    * @return a scrollpane with the output text area
+    */
     private ScrollPane addScroll() {
         ScrollPane sp = new ScrollPane();
         sp.setHbarPolicy(ScrollBarPolicy.NEVER);
