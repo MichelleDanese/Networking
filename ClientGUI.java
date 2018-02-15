@@ -26,7 +26,7 @@ import javafx.stage.Stage;
 
 /**
  *
- * @author The Amazing Pip
+ * @author Alex Geer
  */
 
 
