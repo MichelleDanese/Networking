@@ -23,19 +23,19 @@ public class NetworkServer {
      * @param args the command line arguments
      */
     public static void main(String[] args)throws IOException{
-        int number = 0;
-      int temp = 0;
+      int input = 0;
+      
       ServerSocket serv = new ServerSocket(4444);
       Socket client = serv.accept();
-        System.out.println("rEADING");
+        
       Scanner scan = new Scanner(client.getInputStream());
       
-      number = scan.nextInt();
-      System.out.println(number);
-      temp = number * 2;
+      input = scan.nextInt();
+      
       
       PrintStream p = new PrintStream(client.getOutputStream());
-      p.println(temp);
+      p.println(input);
     }
+    
     
 }
