@@ -15,12 +15,17 @@ import java.util.Scanner;
 
 /**
  *
- * @author miche
+ * @author miche, Sam
  */
 public class NetworkServer {
 
     /**
      * @param args the command line arguments
+     *get/send current date and time
+     *get/send uptime
+     *get/send memory use
+     *get/send Netstat
+     *
      */
     public static void main(String[] args)throws IOException{
       int input = 0;
