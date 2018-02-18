@@ -21,22 +21,29 @@ public class NetworkServer {
 
     /**
      * @param args the command line arguments
-     *get/send current date and time
-     *get/send uptime
-     *get/send memory use
-     *get/send Netstat
-     *
+     * get/send current date and time
+     * get/send uptime
+     * get/send memory use
+     * get/send Netstat
+     * get/send current users
+     * get/send host running processes
+     * quit
      */
-    public static void main(String[] args)throws IOException{
+     public static void main(String[] args)throws IOException{
       int input = 0;
-      
       ServerSocket serv = new ServerSocket(4444);
       Socket client = serv.accept();
-        
+      try {
+      serverSocket = new ServerSocket(4444);
+      System.out.println("Socket created.");
+      }
+      catch (IOException e) {
+      System.out.println(e);
+      }
+      
       Scanner scan = new Scanner(client.getInputStream());
       
       input = scan.nextInt();
-      
       
       PrintStream p = new PrintStream(client.getOutputStream());
       p.println(input);
