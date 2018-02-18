@@ -11,6 +11,7 @@ import java.io.PrintWriter;
 import java.io.PrintStream;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.util.Date;
 import java.util.Scanner;
 
 /**
@@ -30,17 +31,30 @@ public class NetworkServer {
      * quit
      */
      public static void main(String[] args)throws IOException{
-      int input = 0;
+      String result = "";
+      String s = "";
+      int input = -1;
+      Date start = new Date();
       
       try {
-      ServerSocket serv = new ServerSocket(4444);
-      Socket client = serv.accept();
-      Scanner scan = new Scanner(client.getInputStream());
+        ServerSocket serv = new ServerSocket(4444);
+        Socket client = serv.accept();
+        
+        Scanner scan = new Scanner(client.getInputStream());
+        s = scan.next();
+        input = Integer.parseInt(s);
+            
+            SystemProtocol sp = new SystemProtocol();
+            if(input==1){
+                result = sp.getDate();
+            }
+            if(input == 2){
+                result = sp.getUptime(start);
+            }
+            PrintStream p = new PrintStream(client.getOutputStream());
       
-      input = scan.nextInt();
-      
-      PrintStream p = new PrintStream(client.getOutputStream());
-      p.println(input);
+            p.println(result);
+        
       }
       catch (IOException e) {
       System.out.println(e);
