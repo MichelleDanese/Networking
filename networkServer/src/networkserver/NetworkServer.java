@@ -16,7 +16,7 @@ import java.util.Scanner;
 
 /**
  *
- * @author miche, Sam
+ * @author miche
  */
 public class NetworkServer {
 
