@@ -32,16 +32,22 @@ ciswkstn114
 
 public class Client extends Thread{
     
+    private int clientName;
     private Socket clientSocket;
     private PrintWriter out;
     private BufferedReader in;
     String socketAddr;
     private int command;
+    String response; 
     
-    public Client(String ipAddress, int command){
+    long tStart;
+    long tEnd;
+    long duration;
+    
+    public Client(String ipAddress, int command, int clientName){
         this.command = command;
         this.socketAddr = ipAddress;
-        
+        this.clientName = clientName;    
     }
 
     @Override
@@ -49,6 +55,7 @@ public class Client extends Thread{
     public void run(){
         try {
             //make connected socket
+            tStart = System.nanoTime();
             clientSocket = new Socket(socketAddr, 5555);
             
             //get sockets output and input stream
@@ -58,22 +65,31 @@ public class Client extends Thread{
             //send command
             sendCommand();
             
-            //listen for response
-            //need code here!
+            
+           
+            //listen/wait until something comes out of the buffer
+            while( (response = in.readLine() ) != null) 
+            {
+               ; //print response later to get accurate time
+            }
+            
+            tEnd = System.nanoTime();
             
             
-            
-            //close connection
+            //close streams first
             out.close();
             in.close();
+            //close socket
             clientSocket.close();
-            
             
         } catch (IOException ex) {
             System.out.println("client connection error");
             Logger.getLogger(Client.class.getName()).log(Level.SEVERE, null, ex);
         }
         
+        System.out.println("Client " + clientName + ": " + response);
+        //calc the timing
+        duration = tEnd - tStart;
         
         
 
@@ -81,6 +97,7 @@ public class Client extends Thread{
     
     private void sendCommand(){
            out.print(command);
+           
     }
 }
 

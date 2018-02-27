@@ -23,6 +23,7 @@ public class ClientTool {
     
     private int option;
     
+    private long avgTime;
    
     /**
      * @param args the command line arguments
@@ -63,13 +64,22 @@ public class ClientTool {
                 
                 //make clients
                 for(int i = 0;i < nClients; i++){
-                    clients[i] = new Client(ipAddress, option );
+                    clients[i] = new Client(ipAddress, option, i);
                 }
                 
                 //start clientss
                 for(Client c : clients){
                     c.start();
                 }
+                
+                //calculate average time
+                avgTime = 0;
+                for(Client c : clients){
+                    avgTime += c.duration;
+                }
+                avgTime = avgTime/nClients;
+                System.out.println("Average server response time: " + avgTime);
+                
             }//else   
         }//menu while loop
     }
