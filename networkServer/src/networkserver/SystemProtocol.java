@@ -5,6 +5,9 @@
  */
 package networkserver;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -32,6 +35,26 @@ public class SystemProtocol {
         return result;
         
     }
-    
+    public void getCPUUsage(){
+        try{
+            String result = "x";
+            ;
+		     	ProcessBuilder a = new ProcessBuilder("top", "-b", "-n", "1");
+			Process start = a.start();
+			BufferedReader input = new BufferedReader(new InputStreamReader(start.getInputStream()));
+			while((result = input.readLine())!= null){
+                                System.out.println("Yo");
+				if(result.isEmpty()){
+					break;
+				}
+				System.out.println(result);
+				
+			}
+        }
+        catch(IOException e){
+            
+        }
+        
+    }
     
 }

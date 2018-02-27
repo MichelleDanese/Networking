@@ -31,7 +31,7 @@ public class NetworkServer {
      * quit
      */
      public static void main(String[] args)throws IOException{
-      String result = "";
+      String result = "x";
       String s = "";
       int input = -1;
       Date start = new Date();
@@ -51,8 +51,12 @@ public class NetworkServer {
             if(input == 2){
                 result = sp.getUptime(start);
             }
+            if(input == 3){
+                sp.getCPUUsage();
+                result = "2";
+            }
             PrintStream p = new PrintStream(client.getOutputStream());
-      
+            
             p.println(result);
         
       }
