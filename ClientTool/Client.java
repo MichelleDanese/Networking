@@ -56,12 +56,12 @@ public class Client extends Thread{
         try {
             //log start time
             tStart = System.nanoTime();
-<<<<<<< HEAD
+
             clientSocket = new Socket(socketAddr, 4444);
-=======
+
             //make connected socket
             clientSocket = new Socket(socketAddr, 5555);
->>>>>>> ef9c0b212b1c36ba7ad374778c14cd967af0a495
+
             
             //get socket's output and input stream
             out = new PrintWriter(clientSocket.getOutputStream(), true);
@@ -71,7 +71,7 @@ public class Client extends Thread{
             sendCommand();
            
             //listen/wait until something comes out of the buffer
-<<<<<<< HEAD
+
             
             while( (response = in.readLine() ) != null) 
             {
@@ -80,14 +80,14 @@ public class Client extends Thread{
                
             }
             
-=======
+
             while( (response = in.readLine() ) == null) 
             {
                ; //waiting until response != null
             }
             //log end time
             tEnd = System.nanoTime();
->>>>>>> ef9c0b212b1c36ba7ad374778c14cd967af0a495
+
             
             tEnd = System.nanoTime();
             System.out.println("Zeep");
