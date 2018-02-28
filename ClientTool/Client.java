@@ -54,25 +54,24 @@ public class Client extends Thread{
 
     public void run(){
         try {
-            //make connected socket
+            //log start time
             tStart = System.nanoTime();
+            //make connected socket
             clientSocket = new Socket(socketAddr, 5555);
             
-            //get sockets output and input stream
+            //get socket's output and input stream
             out = new PrintWriter(clientSocket.getOutputStream(), true);
             in = new BufferedReader(new InputStreamReader( clientSocket.getInputStream()));
             
             //send command
             sendCommand();
-            
-            
            
             //listen/wait until something comes out of the buffer
-            while( (response = in.readLine() ) != null) 
+            while( (response = in.readLine() ) == null) 
             {
-               ; //print response later to get accurate time
+               ; //waiting until response != null
             }
-            
+            //log end time
             tEnd = System.nanoTime();
             
             
@@ -96,7 +95,7 @@ public class Client extends Thread{
     }    
     
     private void sendCommand(){
-           out.print(command);
+           out.println(command);
            
     }
 }
