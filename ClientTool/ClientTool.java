@@ -16,13 +16,16 @@ import java.util.logging.Logger;
  * @author Alex Geer
  */
 public class ClientTool {
+    //cmd line arg, ip addr of server machine
     private final String ipAddress;
+    //user input reader
     private final BufferedReader stdIn;
     
+    //number of clients req by user
     private int nClients;
-    
+    //menu option selected by user
     private int option;
-    
+    //avg response time for request
     private long avgTime;
    
     /**
@@ -40,6 +43,9 @@ public class ClientTool {
         this.nClients = 0;
     }
     
+    /**
+     * display menu, create clients, request and response protocol
+     */
     private void execute(){
         Client[] clients;
         boolean running = true;
@@ -72,18 +78,39 @@ public class ClientTool {
                     c.start();
                 }
                 
-                //calculate average time
+                //alternate way to wait for threads to finish is : c.join()
+                
+                //wait for threads to finish
+                try{
+                    Thread.sleep(5000);
+                } catch (InterruptedException ex) {
+                    Logger.getLogger(ClientTool.class.getName()).log(Level.SEVERE, null, ex);
+                }
+                
+                
+                //calculate average time, print responses
                 avgTime = 0;
                 for(Client c : clients){
-                    avgTime += c.duration;
+                    System.out.println("Client " + c.getClientName() + ": " + c.getResponse());
+                    avgTime += c.getDuration();
                 }
+                
+                //catch div by 0
+                try{
                 avgTime = avgTime/nClients;
+                }
+                catch(ArithmeticException ae){
+                }
+                
                 System.out.println("Average server response time: " + avgTime);
                 
             }//else   
         }//menu while loop
     }
     
+    /**
+     * displays a menu on the console
+     */
     private void displayMenu(){
         System.out.println( "1.	Host current Date and Time\n" +
                             "2.	Host uptime\n" +
@@ -94,6 +121,10 @@ public class ClientTool {
                             "7.	Quit");
     }
     
+    /**
+     * gets user input for number of clients 
+     * @return the user requested number of clients
+     */
     private int getNumClients(){
         String userInput = "0";
         
@@ -109,8 +140,8 @@ public class ClientTool {
             }
             
             //dont let user make more than 100 clients
-            while(Integer.parseInt(userInput) > 100){
-                System.out.println("Only integer values < 100: ");
+            while(Integer.parseInt(userInput) > 100 || Integer.parseInt(userInput) < 1){
+                System.out.println("Only integer values [1,100]: ");
                 userInput = stdIn.readLine();
             }
               
@@ -123,14 +154,17 @@ public class ClientTool {
     }
     
     
-    
+    /**
+     * user inputs desired menu option
+     * @return an int corresponding to the menu option the user wants
+     */
     private int getInput(){
         String userInput = "-1";
         try {
             userInput = stdIn.readLine();
             
             //check for numeric format
-            while(!isValidCommand(userInput) ) {
+            while(!isValidOption(userInput) ) {
                 System.out.println("Only integer values [1 - 7]: ");
                 userInput = stdIn.readLine();
             }
@@ -142,11 +176,16 @@ public class ClientTool {
         return Integer.parseInt(userInput);
     }
     
-    private boolean isValidCommand(String command){
+    /**
+     * 
+     * @param option the user input option to be evaluated
+     * @return true if valid, false o.w.
+     */
+    private boolean isValidOption(String option){
         //check if is int
-        if(isNumeric(command)){
+        if(isNumeric(option)){
             //check if valid menu option, 1-7
-            int i = Integer.parseInt(command);
+            int i = Integer.parseInt(option);
             if( i >= 1 && i <= 7 )
                 return true;
         }
@@ -154,6 +193,11 @@ public class ClientTool {
         return false;
     }
     
+    /**
+     * 
+     * @param str
+     * @return true if arg string is integer
+     */
     private boolean isNumeric(String str)  {  
         try {  
             int i = Integer.parseInt(str);  

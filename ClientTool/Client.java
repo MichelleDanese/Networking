@@ -9,8 +9,8 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
+import java.net.ConnectException;
 import java.net.Socket;
-import java.net.SocketException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 /**
@@ -33,33 +33,47 @@ ciswkstn114
 public class Client extends Thread{
     
     private int clientName;
+    
+    //Client IO tools
     private Socket clientSocket;
     private PrintWriter out;
     private BufferedReader in;
-    String socketAddr;
-    private int command;
-    String response; 
+    //server response
+    private String response; 
+
     
-    long tStart;
-    long tEnd;
-    long duration;
+    
+    //Client IO config fields
+    private String socketAddr;
+    
+    //user input 
+    private int command;
+    
+    //response time metrics
+   private long tStart;
+   private long tEnd;
+   
     
     public Client(String ipAddress, int command, int clientName){
         this.command = command;
         this.socketAddr = ipAddress;
         this.clientName = clientName;    
     }
-
+    
+    /**
+     *Thread method
+     * connect socket, send request, get response, measure time
+     */
     @Override
-
     public void run(){
         try {
-            //log start time
+            //start time
             tStart = System.nanoTime();
-            //make connected socket
+            
+            //new connected socket
             clientSocket = new Socket(socketAddr, 5555);
             
-            //get socket's output and input stream
+            //get sockets output and input stream
             out = new PrintWriter(clientSocket.getOutputStream(), true);
             in = new BufferedReader(new InputStreamReader( clientSocket.getInputStream()));
             
@@ -69,11 +83,12 @@ public class Client extends Thread{
             //listen/wait until something comes out of the buffer
             while( (response = in.readLine() ) == null) 
             {
-               ; //waiting until response != null
+                //wait while buffer is empty  
             }
-            //log end time
-            tEnd = System.nanoTime();
             
+            
+            //end time
+            tEnd = System.nanoTime();
             
             //close streams first
             out.close();
@@ -81,22 +96,51 @@ public class Client extends Thread{
             //close socket
             clientSocket.close();
             
-        } catch (IOException ex) {
+        }
+        catch(ConnectException ce){
+                System.out.println("client" + clientName + " : *conn refused*");
+            }
+        catch (NullPointerException np){
+                System.out.println("Socket not connected, cannot get streams");
+            }
+        catch (IOException ex) {
             System.out.println("client connection error");
             Logger.getLogger(Client.class.getName()).log(Level.SEVERE, null, ex);
         }
-        
-        System.out.println("Client " + clientName + ": " + response);
-        //calc the timing
-        duration = tEnd - tStart;
-        
-        
-
-    }    
-    
+        catch(Exception e){
+            System.out.println("Unknown exception");
+        }
+    }
+    /**
+     * send a command to the server
+     */
     private void sendCommand(){
            out.println(command);
            
+    }
+    
+    /**
+     * 
+     * @return the servers response
+     */
+    public String getResponse() {
+        return response;
+    }
+
+    /**
+     * 
+     * @return the name assigned to the client, a number 0 to nClients-1
+     */
+    public int getClientName() {
+        return clientName;
+    }
+    
+    /**
+     * calculates server response time
+     * @return the difference of tEnd and tStart
+     */
+    public long getDuration() {
+        return tEnd - tStart;
     }
 }
 
