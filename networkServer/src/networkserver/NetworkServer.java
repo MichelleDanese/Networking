@@ -5,14 +5,13 @@
  */
 package networkserver;
 
+import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
-import java.io.PrintStream;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.Date;
-import java.util.Scanner;
 
 /**
  *
@@ -38,10 +37,16 @@ public class NetworkServer {
       
       try {
         ServerSocket serv = new ServerSocket(4444);
+        while(true){
         Socket client = serv.accept();
+        System.out.println("Connecting");
         
-        Scanner scan = new Scanner(client.getInputStream());
-        s = scan.next();
+        BufferedReader scan = new BufferedReader(new InputStreamReader(client.getInputStream()));
+        
+        s = scan.readLine();
+        System.out.println(s);
+        /*
+        System.out.println(s);
         input = Integer.parseInt(s);
             
             SystemProtocol sp = new SystemProtocol();
@@ -55,9 +60,13 @@ public class NetworkServer {
                 sp.getCPUUsage();
                 result = "2";
             }
-            PrintStream p = new PrintStream(client.getOutputStream());
+*/
+            PrintWriter p = new PrintWriter(client.getOutputStream(), true);
             
-            p.println(result);
+            p.println("Yo");
+                
+            System.out.println("Disconnecting");
+        }
         
       }
       catch (IOException e) {

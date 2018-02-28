@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package clienttool;
+//package clienttool;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -56,7 +56,7 @@ public class Client extends Thread{
         try {
             //make connected socket
             tStart = System.nanoTime();
-            clientSocket = new Socket(socketAddr, 5555);
+            clientSocket = new Socket(socketAddr, 4444);
             
             //get sockets output and input stream
             out = new PrintWriter(clientSocket.getOutputStream(), true);
@@ -68,13 +68,17 @@ public class Client extends Thread{
             
            
             //listen/wait until something comes out of the buffer
+            
             while( (response = in.readLine() ) != null) 
             {
-               ; //print response later to get accurate time
+               
+               break; //print response later to get accurate time
+               
             }
             
-            tEnd = System.nanoTime();
             
+            tEnd = System.nanoTime();
+            System.out.println("Zeep");
             
             //close streams first
             out.close();
@@ -96,7 +100,7 @@ public class Client extends Thread{
     }    
     
     private void sendCommand(){
-           out.print(command);
+           out.println(command);
            
     }
 }
