@@ -78,7 +78,7 @@ public class Client extends Thread{
             //listen/wait until something comes out of the buffer
             while( (response = in.readLine() ) == null) 
             {
-                //print response later to get accurate time    
+                //wait while buffer is empty    
             }
             
             
