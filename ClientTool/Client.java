@@ -9,8 +9,8 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
+import java.net.ConnectException;
 import java.net.Socket;
-import java.net.SocketException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 /**
@@ -33,13 +33,21 @@ ciswkstn114
 public class Client extends Thread{
     
     private int clientName;
+    
+    //Client IO tools
     private Socket clientSocket;
     private PrintWriter out;
     private BufferedReader in;
-    String socketAddr;
-    private int command;
+    //server response
     String response; 
     
+    //Client IO config fields
+    String socketAddr;
+    
+    //user input 
+    private int command;
+    
+    //response time metrics
     long tStart;
     long tEnd;
     long duration;
@@ -54,12 +62,13 @@ public class Client extends Thread{
 
     public void run(){
         try {
-            //log start time
+            //start time
             tStart = System.nanoTime();
-            //make connected socket
+            
+            //new connected socket
             clientSocket = new Socket(socketAddr, 5555);
             
-            //get socket's output and input stream
+            //get sockets output and input stream
             out = new PrintWriter(clientSocket.getOutputStream(), true);
             in = new BufferedReader(new InputStreamReader( clientSocket.getInputStream()));
             
@@ -69,11 +78,12 @@ public class Client extends Thread{
             //listen/wait until something comes out of the buffer
             while( (response = in.readLine() ) == null) 
             {
-               ; //waiting until response != null
+                //wait while buffer is empty    
             }
-            //log end time
-            tEnd = System.nanoTime();
             
+            
+            //end time
+            tEnd = System.nanoTime();
             
             //close streams first
             out.close();
@@ -81,10 +91,21 @@ public class Client extends Thread{
             //close socket
             clientSocket.close();
             
-        } catch (IOException ex) {
+        }
+        catch(ConnectException ce){
+                System.out.println("client" + clientName + " : *conn refused*");
+            }
+        catch (NullPointerException np){
+                System.out.println("Socket not connected, cannot get streams");
+            }
+        catch (IOException ex) {
             System.out.println("client connection error");
             Logger.getLogger(Client.class.getName()).log(Level.SEVERE, null, ex);
         }
+        catch(Exception e){
+            System.out.println("Unknown exception");
+        }
+        
         
         System.out.println("Client " + clientName + ": " + response);
         //calc the timing

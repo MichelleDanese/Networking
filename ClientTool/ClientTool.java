@@ -72,12 +72,29 @@ public class ClientTool {
                     c.start();
                 }
                 
+                //alternate way to wait for threads to finish is : c.join()
+                
+                //wait for threads to finish
+                try{
+                    Thread.sleep(5000);
+                } catch (InterruptedException ex) {
+                    Logger.getLogger(ClientTool.class.getName()).log(Level.SEVERE, null, ex);
+                }
+                
+                
                 //calculate average time
                 avgTime = 0;
                 for(Client c : clients){
                     avgTime += c.duration;
                 }
+                
+                //catch div by 0
+                try{
                 avgTime = avgTime/nClients;
+                }
+                catch(ArithmeticException ae){
+                }
+                
                 System.out.println("Average server response time: " + avgTime);
                 
             }//else   
@@ -109,8 +126,8 @@ public class ClientTool {
             }
             
             //dont let user make more than 100 clients
-            while(Integer.parseInt(userInput) > 100){
-                System.out.println("Only integer values < 100: ");
+            while(Integer.parseInt(userInput) > 100 || Integer.parseInt(userInput) < 1){
+                System.out.println("Only integer values [1,100]: ");
                 userInput = stdIn.readLine();
             }
               
