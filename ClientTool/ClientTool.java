@@ -84,7 +84,8 @@ public class ClientTool {
                 //calculate average time, print responses
                 avgTime = 0;
                 for(int i = 0;i < nClients; i++){
-                    System.out.println("Client " + clients[i].getClientName() + ": " + clients[i].getResponse());
+                    System.out.println("Client " + clients[i].getClientName() );
+                    System.out.print(clients[i].getResponse());
                     avgTime += clients[i].getDuration();
                 }
                 

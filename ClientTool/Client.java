@@ -56,7 +56,7 @@ public class Client extends Thread{
     public void run(){
         try {
             //start time
-            tStart = System.nanoTime();
+            tStart = System.currentTimeMillis();
             
             //new connected socket
             clientSocket = new Socket(socketAddr, 3434);
@@ -71,12 +71,12 @@ public class Client extends Thread{
             String r;
             //listen/wait until something comes out of the buffer
             while( (r = in.readLine()) != null ){
-                response += r;
+                response += r + "\n";
             }
             
             
             //end time
-            tEnd = System.nanoTime();
+            tEnd = System.currentTimeMillis();
             
             //close streams first
             out.close();
