@@ -72,13 +72,28 @@ public class ClientTool {
                 for(Client c : clients){
                     c.start();
                 }
+                //wait for threads to finish
+                try{
+                    Thread.sleep(5000);
+                } catch (InterruptedException ex) {
+                    Logger.getLogger(ClientTool.class.getName()).log(Level.SEVERE, null, ex);
+                }
                 
-                //calculate average time
+                
+                //calculate average time, print responses
                 avgTime = 0;
                 for(Client c : clients){
-                    avgTime += c.duration;
+                    System.out.println("Client " + c.getClientName() + ": " + c.getResponse());
+                    avgTime += c.getDuration();
                 }
+                
+                //catch div by 0
+                try{
                 avgTime = avgTime/nClients;
+                }
+                catch(ArithmeticException ae){
+                }
+                
                 System.out.println("Average server response time: " + avgTime);
                 
             }//else   
