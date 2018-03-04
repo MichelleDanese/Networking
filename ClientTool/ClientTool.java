@@ -101,6 +101,7 @@ public class ClientTool {
                 
             }//else   
         }//menu while loop
+        quit();
     }
     
     private void displayMenu(){
