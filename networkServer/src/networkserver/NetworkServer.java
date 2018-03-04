@@ -45,10 +45,11 @@ public class NetworkServer {
         
         s = scan.readLine();
         System.out.println(s);
-        /*
+
         System.out.println(s);
         input = Integer.parseInt(s);
             
+        try{
             SystemProtocol sp = new SystemProtocol();
             if(input==1){
                 result = sp.getDate();
@@ -56,11 +57,28 @@ public class NetworkServer {
             if(input == 2){
                 result = sp.getUptime(start);
             }
-            if(input == 3){
-                sp.getCPUUsage();
-                result = "2";
+            if(input == 3){ //this should be memory usage
+                result = sp.getMemoryUsage();
             }
-*/
+            if(input == 4){
+                result = sp.getNetstat();
+            }
+            if(input == 5){
+                result = sp.getCurrentUsers();
+            }
+            if (input == 6){
+                result = sp.getRunningProcesses();
+            }
+            
+        }
+        catch (InterruptedException ie){
+            result = "\nerror\n";
+        }
+        catch (IOException IE){
+            result = "error";
+        }
+        
+
             PrintWriter p = new PrintWriter(client.getOutputStream(), true);
             
             p.println("Yo");

@@ -33,8 +33,8 @@ public class SystemProtocol {
         return result;
         
     }
-    public void getCPUUsage(){
-        try{
+    public void getCPUUsage()  throws java.io.IOException, java.lang.InterruptedException{
+        
             String result = "x";
             ;
 		     	ProcessBuilder a = new ProcessBuilder("top", "-b", "-n", "1");
@@ -47,14 +47,7 @@ public class SystemProtocol {
 				}
 				System.out.println(result);
 				
-			}
-        }
-        catch(IOException e){
-            
-        }
-        
-        
-        
+			}       
     }
     
     public String getRunningProcesses()throws java.io.IOException, java.lang.InterruptedException {
@@ -80,6 +73,103 @@ public class SystemProtocol {
         //return proc output
         return processOutput;
     }
+    
+    public String getNetstat()throws java.io.IOException, java.lang.InterruptedException {
+        // Get runtime
+        java.lang.Runtime rt = java.lang.Runtime.getRuntime();
+        // Start a new process: UNIX command 
+        java.lang.Process p = rt.exec("netstat");
+        //wait for the process to complete
+        p.waitFor();
+        
+        // Get process' output from its InputStream
+        java.io.InputStream is = p.getInputStream();
+        java.io.BufferedReader reader = new java.io.BufferedReader(new InputStreamReader(is));
+        // print each line
+        String processOutput = "";
+      String s = null;
+        while ((s = reader.readLine()) != null) {
+            //loop until buffer is empty
+            processOutput += s + "\n";
+        }
+        is.close(); 
+       
+        //return proc output
+        return processOutput;
+    }
+    
+    public String getMemoryUsage()throws java.io.IOException, java.lang.InterruptedException {
+        // Get runtime
+        java.lang.Runtime rt = java.lang.Runtime.getRuntime();
+        // Start a new process: UNIX command 
+        java.lang.Process p = rt.exec("free -m");
+        //wait for the process to complete
+        p.waitFor();
+        
+        // Get process' output from its InputStream
+        java.io.InputStream is = p.getInputStream();
+        java.io.BufferedReader reader = new java.io.BufferedReader(new InputStreamReader(is));
+        // print each line
+        String processOutput = "";
+      String s = null;
+        while ((s = reader.readLine()) != null) {
+            //loop until buffer is empty
+            processOutput += s + "\n";
+        }
+        is.close(); 
+       
+        //return proc output
+        return processOutput;
+    }
+    
+    public String getCurrentUsers()throws java.io.IOException, java.lang.InterruptedException {
+        // Get runtime
+        java.lang.Runtime rt = java.lang.Runtime.getRuntime();
+        // Start a new process: UNIX command 
+        java.lang.Process p = rt.exec("who");
+        //wait for the process to complete
+        p.waitFor();
+        
+        // Get process' output from its InputStream
+        java.io.InputStream is = p.getInputStream();
+        java.io.BufferedReader reader = new java.io.BufferedReader(new InputStreamReader(is));
+        // print each line
+        String processOutput = "";
+      String s = null;
+        while ((s = reader.readLine()) != null) {
+            //loop until buffer is empty
+            processOutput += s + "\n";
+        }
+        is.close(); 
+       
+        //return proc output
+        return processOutput;
+    }
+    
+    public String get() throws java.io.IOException, java.lang.InterruptedException {
+        // Get runtime
+        java.lang.Runtime rt = java.lang.Runtime.getRuntime();
+        // Start a new process: UNIX command 
+        java.lang.Process p = rt.exec("who");
+        //wait for the process to complete
+        p.waitFor();
+        
+        // Get process' output from its InputStream
+        java.io.InputStream is = p.getInputStream();
+        java.io.BufferedReader reader = new java.io.BufferedReader(new InputStreamReader(is));
+        // print each line
+        String processOutput = "";
+      String s = null;
+        while ((s = reader.readLine()) != null) {
+            //loop until buffer is empty
+            processOutput += s + "\n";
+        }
+        is.close(); 
+       
+        //return proc output
+        return processOutput;
+    }
+    
             
     
 }
