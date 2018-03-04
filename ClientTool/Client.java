@@ -47,7 +47,8 @@ public class Client extends Thread{
     public Client(String ipAddress, int command, int clientName){
         this.command = command;
         this.socketAddr = ipAddress;
-        this.clientName = clientName;    
+        this.clientName = clientName;   
+        response = "";
     }
 
     @Override
@@ -67,8 +68,11 @@ public class Client extends Thread{
             //send command
             sendCommand();
            
+            String r;
             //listen/wait until something comes out of the buffer
-            response = in.readLine();
+            while( (r = in.readLine()) != null ){
+                response += r;
+            }
             
             
             //end time
