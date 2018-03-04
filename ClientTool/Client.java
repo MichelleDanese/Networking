@@ -42,14 +42,14 @@ public class Client extends Thread{
     
     long tStart;
     long tEnd;
-    long duration;
     
     public Client(String ipAddress, int command, int clientName){
         this.command = command;
         this.socketAddr = ipAddress;
         this.clientName = clientName;   
         response = "";
-        duration = 0;
+        tStart = 0;
+        tEnd = 0;
     }
 
     @Override
