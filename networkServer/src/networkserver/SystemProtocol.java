@@ -18,9 +18,7 @@ import java.util.concurrent.TimeUnit;
  * @author miche
  */
 public class SystemProtocol {
-    public SystemProtocol(){
-        
-        
+    public SystemProtocol(){   
     }
     
     public String getDate(){
@@ -55,6 +53,33 @@ public class SystemProtocol {
             
         }
         
+        
+        
     }
+    
+    public String getRunningProcesses()throws java.io.IOException, java.lang.InterruptedException {
+        // Get runtime
+        java.lang.Runtime rt = java.lang.Runtime.getRuntime();
+        // Start a new process: UNIX command 
+        java.lang.Process p = rt.exec("ps -A");
+        //wait for the process to complete
+        p.waitFor();
+        
+        // Get process' output from its InputStream
+        java.io.InputStream is = p.getInputStream();
+        java.io.BufferedReader reader = new java.io.BufferedReader(new InputStreamReader(is));
+        // print each line
+        String processOutput = "";
+      String s = null;
+        while ((s = reader.readLine()) != null) {
+            //loop until buffer is empty
+            processOutput += s + "\n";
+        }
+        is.close(); 
+       
+        //return proc output
+        return processOutput;
+    }
+            
     
 }
