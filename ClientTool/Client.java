@@ -81,12 +81,8 @@ public class Client extends Thread{
             sendCommand();
            
             //listen/wait until something comes out of the buffer
-            while( (response = in.readLine() ) == null) 
-            {
-                //wait while buffer is empty  
-            }
-            
-            
+            response = in.readLine;
+       
             //end time
             tEnd = System.nanoTime();
             
