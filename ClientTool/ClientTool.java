@@ -5,6 +5,7 @@
  */
 //package clienttool;
 
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -69,20 +70,38 @@ public class ClientTool {
                 }
                 
                 //start clientss
-                for(Client c : clients){
-                    c.start();
+                for(int i = 0;i < nClients; i++){
+                    clients[i].start();
+                }
+                //wait for threads to finish
+                try{
+                    Thread.sleep(5000);
+                } catch (InterruptedException ex) {
+                    Logger.getLogger(ClientTool.class.getName()).log(Level.SEVERE, null, ex);
                 }
                 
-                //calculate average time
+                
+                //calculate average time, print responses
                 avgTime = 0;
-                for(Client c : clients){
-                    avgTime += c.duration;
+                for(int i = 0;i < nClients; i++){
+                    System.out.println("Client " + clients[i].getClientName() );
+                    System.out.print(clients[i].getResponse());
+                    avgTime += clients[i].getDuration();
                 }
+                
+                //catch div by 0
+                try{
                 avgTime = avgTime/nClients;
+                }
+                catch(ArithmeticException ae){
+                    //here
+                }
+                
                 System.out.println("Average server response time: " + avgTime);
                 
             }//else   
         }//menu while loop
+        quit();
     }
     
     private void displayMenu(){
