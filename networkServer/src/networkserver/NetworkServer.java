@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package networkserver;
+
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -36,7 +36,7 @@ public class NetworkServer {
       Date start = new Date();
       
       try {
-        ServerSocket serv = new ServerSocket(4444);
+        ServerSocket serv = new ServerSocket(3434);
         while(true){
         Socket client = serv.accept();
         System.out.println("Connecting");
@@ -44,29 +44,40 @@ public class NetworkServer {
         BufferedReader scan = new BufferedReader(new InputStreamReader(client.getInputStream()));
         
         s = scan.readLine();
-        System.out.println(s);
+        //System.out.println(s);
 
-        System.out.println(s);
+        //System.out.println(s);
         input = Integer.parseInt(s);
             
         try{
             SystemProtocol sp = new SystemProtocol();
             if(input==1){
+		System.out.println("Sending date and time to client");
                 result = sp.getDate();
             }
             if(input == 2){
+		System.out.println("Sending uptime to client");
+
                 result = sp.getUptime(start);
             }
             if(input == 3){ //this should be memory usage
+		System.out.println("Sending memory usage to client");
+
                 result = sp.getMemoryUsage();
             }
             if(input == 4){
+		System.out.println("Sending Nestat to client");
+
                 result = sp.getNetstat();
             }
             if(input == 5){
+		System.out.println("Sending current users to client");
+
                 result = sp.getCurrentUsers();
             }
             if (input == 6){
+		System.out.println("Sending running process to client");
+
                 result = sp.getRunningProcesses();
             }
             
@@ -80,10 +91,10 @@ public class NetworkServer {
         
 
             PrintWriter p = new PrintWriter(client.getOutputStream(), true);
-            
-            p.println("Yo");
+            System.out.print(result);
+            p.print(result);
                 
-            System.out.println("Disconnecting");
+            System.out.println("\nDisconnecting");
         }
         
       }

@@ -3,7 +3,6 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package networkserver;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -69,7 +68,7 @@ public class SystemProtocol {
             processOutput += s + "\n";
         }
         is.close(); 
-       
+       		
         //return proc output
         return processOutput;
     }
