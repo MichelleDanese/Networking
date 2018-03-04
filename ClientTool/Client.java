@@ -101,5 +101,29 @@ public class Client extends Thread{
            out.println(command);
            
     }
+    
+    /**
+     * 
+     * @return the servers response
+     */
+    public String getResponse() {
+        return response;
+    }
+
+    /**
+     * 
+     * @return the name assigned to the client, a number 0 to nClients-1
+     */
+    public int getClientName() {
+        return clientName;
+    }
+    
+    /**
+     * calculates server response time
+     * @return the difference of tEnd and tStart
+     */
+    public long getDuration() {
+        return tEnd - tStart;
+    }
 }
 
