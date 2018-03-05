@@ -6,6 +6,7 @@
 //package clienttool;
 
 
+import clienttool.Client;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -27,12 +28,19 @@ public class ClientTool {
     
     private long avgTime;
    
+    private long sleepTime;
     /**
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        ClientTool ct = new ClientTool(args[0]);
-        ct.execute();
+        try{
+            ClientTool ct = new ClientTool(args[0]);
+            ct.execute();
+        }
+        catch(ArrayIndexOutOfBoundsException aie){
+            System.out.println("No IP address in argument");
+            System.exit(1);
+        }
         
     }
     
@@ -42,7 +50,7 @@ public class ClientTool {
         this.nClients = 0;
     }
     
-    private void execute(){
+    private void execute() throws ArrayIndexOutOfBoundsException{
         Client[] clients;
         boolean running = true;
         
@@ -61,6 +69,12 @@ public class ClientTool {
             
             //client loops
             else{
+                if(option ==  4){
+                    sleepTime = nClients*9000;
+                }
+                else{
+                    sleepTime = 5000;
+                }
                 //reset array
                 clients = new Client[nClients];
                 
@@ -74,6 +88,9 @@ public class ClientTool {
                     clients[i].start();
                 }
                 
+                
+                    
+                    
                 //wait for threads to finish
                 try{
                     Thread.sleep(nClients * 1000);
