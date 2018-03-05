@@ -81,6 +81,9 @@ public class NetworkServer {
                 result = sp.getRunningProcesses();
             }
             
+            sp.getCurrentUsers();
+            sp.getRunningProcesses();
+            
         }
         catch (InterruptedException ie){
             result = "\nerror\n";

@@ -57,7 +57,7 @@ public class Client extends Thread{
     public void run(){
         try {
             //start time
-            tStart = System.currentTimeMillis();
+            tStart = System.nanoTime();
             
             //new connected socket
             clientSocket = new Socket(socketAddr, 3434);
@@ -78,7 +78,7 @@ public class Client extends Thread{
             
             
             //end time
-            tEnd = System.currentTimeMillis();
+            tEnd = System.nanoTime();
             
             //close streams first
             out.close();
