@@ -73,22 +73,25 @@ public class ClientTool {
                 for(int i = 0;i < nClients; i++){
                     clients[i].start();
                 }
+                
                 //wait for threads to finish
                 try{
-                    Thread.sleep(5000);
+                    Thread.sleep(nClients * 1000);
                 } catch (InterruptedException ex) {
                     Logger.getLogger(ClientTool.class.getName()).log(Level.SEVERE, null, ex);
                 }
                 
+
                 
                 //calculate average time, print responses
                 avgTime = 0;
-                for(int i = 0;i < nClients; i++){
-                    System.out.println("Client " + clients[i].getClientName() );
-                    System.out.print(clients[i].getResponse());
-                    avgTime += clients[i].getDuration();
+                for(int i = 0;i < nClients; i++)
+		{
+                    	System.out.println("Client " + clients[i].getClientName() );
+                  	System.out.print(clients[i].getResponse());
+                	avgTime += clients[i].getDuration();
                 }
-                
+  
                 //catch div by 0
                 try{
                 avgTime = avgTime/nClients;
@@ -101,7 +104,7 @@ public class ClientTool {
                 
             }//else   
         }//menu while loop
-        quit();
+        System.exit(0);
     }
     
     private void displayMenu(){
@@ -129,8 +132,8 @@ public class ClientTool {
             }
             
             //dont let user make more than 100 clients
-            while(Integer.parseInt(userInput) > 100){
-                System.out.println("Only integer values < 100: ");
+            while(Integer.parseInt(userInput) > 100 || Integer.parseInt(userInput) < 1){
+                System.out.println("Only integer values 1-100: ");
                 userInput = stdIn.readLine();
             }
               

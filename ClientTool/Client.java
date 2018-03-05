@@ -42,14 +42,14 @@ public class Client extends Thread{
     
     long tStart;
     long tEnd;
+    long duration;
     
     public Client(String ipAddress, int command, int clientName){
         this.command = command;
         this.socketAddr = ipAddress;
         this.clientName = clientName;   
         response = "";
-        tStart = 0;
-        tEnd = 0;
+        duration = 0;
     }
 
     @Override
@@ -57,10 +57,10 @@ public class Client extends Thread{
     public void run(){
         try {
             //start time
-            tStart = System.nanoTime();
+            tStart = System.currentTimeMillis();
             
             //new connected socket
-            clientSocket = new Socket(socketAddr, 3434);
+            clientSocket = new Socket(socketAddr, 3435);
             
             //get sockets output and input stream
             out = new PrintWriter(clientSocket.getOutputStream(), true);
@@ -78,7 +78,7 @@ public class Client extends Thread{
             
             
             //end time
-            tEnd = System.nanoTime();
+            tEnd = System.currentTimeMillis();
             
             //close streams first
             out.close();
@@ -100,7 +100,7 @@ public class Client extends Thread{
         catch(Exception e){
             System.out.println("Unknown exception");
         }
-
+       System.out.println("Client " + clientName + " disconnecting");
     }    
     
     private void sendCommand(){

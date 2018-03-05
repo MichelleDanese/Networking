@@ -36,8 +36,9 @@ public class NetworkServer {
       Date start = new Date();
       
       try {
-        ServerSocket serv = new ServerSocket(3434);
+        ServerSocket serv = new ServerSocket(3435);
         while(true){
+        System.out.println("Press Ctr+C to terminate...");
         Socket client = serv.accept();
         System.out.println("Connecting");
         
@@ -81,8 +82,7 @@ public class NetworkServer {
                 result = sp.getRunningProcesses();
             }
             
-            sp.getCurrentUsers();
-            sp.getRunningProcesses();
+        
             
         }
         catch (InterruptedException ie){
@@ -96,8 +96,9 @@ public class NetworkServer {
             PrintWriter p = new PrintWriter(client.getOutputStream(), true);
             System.out.print(result);
             p.print(result);
-                
+            p.println();                
             System.out.println("\nDisconnecting");
+            client.close();
         }
         
       }
