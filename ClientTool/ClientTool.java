@@ -117,7 +117,7 @@ public class ClientTool {
                     //here
                 }
                 
-                System.out.println("Average server response time: " + avgTime);
+                System.out.println("Average server response time: " + avgTime + "milliseconds");
                 
             }//else   
         }//menu while loop
