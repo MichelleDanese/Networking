@@ -6,7 +6,6 @@
 //package clienttool;
 
 
-import clienttool.Client;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -26,22 +25,22 @@ public class ClientTool {
     
     private int option;
     
-    private long avgTime;
+    private double avgTime;
+
+    private long sleepTime = 5000;
    
-    private long sleepTime;
     /**
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        try{
-            ClientTool ct = new ClientTool(args[0]);
-            ct.execute();
+       try{    
+           ClientTool ct = new ClientTool(args[0]);
+           ct.execute();
         }
-        catch(ArrayIndexOutOfBoundsException aie){
+	catch(ArrayIndexOutOfBoundsException aie){
             System.out.println("No IP address in argument");
             System.exit(1);
         }
-        
     }
     
     public ClientTool(String ipAddress){
@@ -69,12 +68,16 @@ public class ClientTool {
             
             //client loops
             else{
+		//adjust sleeptime for large tx size
                 if(option ==  4){
-                    sleepTime = nClients*9000;
+                    sleepTime = nClients*500;
                 }
                 else{
                     sleepTime = 5000;
                 }
+
+
+
                 //reset array
                 clients = new Client[nClients];
                 
@@ -88,12 +91,9 @@ public class ClientTool {
                     clients[i].start();
                 }
                 
-                
-                    
-                    
                 //wait for threads to finish
                 try{
-                    Thread.sleep(nClients * 1000);
+                    Thread.sleep(sleepTime);
                 } catch (InterruptedException ex) {
                     Logger.getLogger(ClientTool.class.getName()).log(Level.SEVERE, null, ex);
                 }
@@ -101,17 +101,17 @@ public class ClientTool {
 
                 
                 //calculate average time, print responses
-                avgTime = 0;
+                avgTime = 0.0;
                 for(int i = 0;i < nClients; i++)
 		{
                     	System.out.println("Client " + clients[i].getClientName() );
                   	System.out.print(clients[i].getResponse());
-                	avgTime += clients[i].getDuration();
+                	avgTime += clients[i].getDuration()*1.0;
                 }
   
                 //catch div by 0
                 try{
-                avgTime = avgTime/nClients;
+                avgTime = avgTime/(nClients*1.0);
                 }
                 catch(ArithmeticException ae){
                     //here

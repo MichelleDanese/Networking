@@ -57,7 +57,7 @@ public class Client extends Thread{
     public void run(){
         try {
             //start time
-            tStart = System.currentTimeMillis();
+            tStart = System.nanoTime();
             
             //new connected socket
             clientSocket = new Socket(socketAddr, 3435);
@@ -78,7 +78,7 @@ public class Client extends Thread{
             
             
             //end time
-            tEnd = System.currentTimeMillis();
+            tEnd = System.nanoTime();
             
             //close streams first
             out.close();
@@ -128,8 +128,8 @@ public class Client extends Thread{
      * calculates server response time
      * @return the difference of tEnd and tStart
      */
-    public long getDuration() {
-        return tEnd - tStart;
+    public double getDuration() {
+        return (tEnd - tStart)/1000000.0;
     }
 }
 
