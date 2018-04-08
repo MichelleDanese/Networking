@@ -19,16 +19,18 @@ import java.util.Date;
  */
 public class ServerHandler extends Thread {
     Socket client;
-    public ServerHandler(Socket incomingClient){
+    Date start;
+    public ServerHandler(Socket incomingClient, Date date){
         client = incomingClient;
+        start = date;
     }
     public void run(){
         String result = "x";
       String s = "";
       int input = -1;
-      Date start = new Date();
+      
         try{
-        
+        System.out.println("Starting new sever thread");
         BufferedReader scan = new BufferedReader(new InputStreamReader(client.getInputStream()));
         
         s = scan.readLine();
@@ -69,7 +71,7 @@ public class ServerHandler extends Thread {
                 result = sp.getRunningProcesses();
             }
             
-        
+            
             
         }
         catch (InterruptedException ie){
@@ -79,11 +81,12 @@ public class ServerHandler extends Thread {
             result = "error";
         }
         
-
+            
             PrintWriter p = new PrintWriter(client.getOutputStream(), true);
             System.out.print(result);
             p.print(result);
-            p.println();                
+            p.println();             
+            System.out.println("Closing Server thread");
             System.out.println("\nDisconnecting");
             client.close();
         }

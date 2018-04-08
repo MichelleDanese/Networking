@@ -34,7 +34,7 @@ public class NetworkServer {
       String s = "";
       int input = -1;
       Date start = new Date();
-      
+       
       
       try {
         ServerSocket serv = new ServerSocket(3435);
@@ -42,8 +42,8 @@ public class NetworkServer {
         System.out.println("Press Ctr+C to terminate...");
         Socket client = serv.accept();
         System.out.println("Connecting");
-        ServerHandler handler = new ServerHandler(client);
-        handler.run();
+        ServerHandler handler = new ServerHandler(client, start);
+        handler.start();
         }
         
       }
