@@ -35,70 +35,15 @@ public class NetworkServer {
       int input = -1;
       Date start = new Date();
       
+      
       try {
         ServerSocket serv = new ServerSocket(3435);
         while(true){
         System.out.println("Press Ctr+C to terminate...");
         Socket client = serv.accept();
         System.out.println("Connecting");
-        
-        BufferedReader scan = new BufferedReader(new InputStreamReader(client.getInputStream()));
-        
-        s = scan.readLine();
-        //System.out.println(s);
-
-        //System.out.println(s);
-        input = Integer.parseInt(s);
-            
-        try{
-            SystemProtocol sp = new SystemProtocol();
-            if(input==1){
-		System.out.println("Sending date and time to client");
-                result = sp.getDate();
-            }
-            if(input == 2){
-		System.out.println("Sending uptime to client");
-
-                result = sp.getUptime(start);
-            }
-            if(input == 3){ //this should be memory usage
-		System.out.println("Sending memory usage to client");
-
-                result = sp.getMemoryUsage();
-            }
-            if(input == 4){
-		System.out.println("Sending Nestat to client");
-
-                result = sp.getNetstat();
-            }
-            if(input == 5){
-		System.out.println("Sending current users to client");
-
-                result = sp.getCurrentUsers();
-            }
-            if (input == 6){
-		System.out.println("Sending running process to client");
-
-                result = sp.getRunningProcesses();
-            }
-            
-        
-            
-        }
-        catch (InterruptedException ie){
-            result = "\nerror\n";
-        }
-        catch (IOException IE){
-            result = "error";
-        }
-        
-
-            PrintWriter p = new PrintWriter(client.getOutputStream(), true);
-            System.out.print(result);
-            p.print(result);
-            p.println();                
-            System.out.println("\nDisconnecting");
-            client.close();
+        ServerHandler handler = new ServerHandler(client);
+        handler.run();
         }
         
       }
